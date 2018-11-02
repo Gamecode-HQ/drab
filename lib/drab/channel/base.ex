@@ -1,9 +1,14 @@
 defmodule Drab.Channel.Base do
   @moduledoc false
 
+  @callback on_join(Socket.t) ::
+              {:ok, Socket.t} |
+              {:ok, map, Socket.t} |
+              {:error, map}
+
   defmacro __using__(_opts) do
     quote do
-
+      @behaviour unquote(__MODULE__)
       use Phoenix.Channel, Drab.Config.get(:phoenix_channel_options)
 
       intercept(["subscribe", "unsubscribe"])
