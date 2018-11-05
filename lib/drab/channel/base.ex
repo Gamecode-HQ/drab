@@ -6,6 +6,8 @@ defmodule Drab.Channel.Base do
               {:ok, map, Socket.t} |
               {:error, map}
 
+  @callback on_handle_info(Socket.t, any()) :: any()
+
   defmacro __using__(_opts) do
     quote do
       @behaviour unquote(__MODULE__)
@@ -19,13 +21,14 @@ defmodule Drab.Channel.Base do
         {:ok, pid} = Drab.start_link(socket)
         socket_with_pid = assign(socket, :__drab_pid, pid)
 
-        on_join(socket_with_pid)
+        case pid |> Drab.get_socket() |> on_join() do
+          {:ok, _socket} -> {:ok, socket_with_pid}
+          _error -> {:error, %{reason: "on_join/1 failed"}}
+        end
       end
 
       @spec on_join(Phoenix.Socket.t()) :: {:ok, Phoenix.Socket.t()}
-      def on_join(socket) do
-        {:ok, socket}
-      end
+      def on_join(socket), do: {:ok, socket}
 
       @spec handle_in(String.t(), map, Phoenix.Socket.t()) :: {:noreply, Phoenix.Socket.t()}
       def handle_in("execjs", %{"ok" => [sender_encrypted, reply]}, socket) do
@@ -163,6 +166,17 @@ defmodule Drab.Channel.Base do
         {:noreply, socket}
       end
 
+      def handle_info(message, socket) do
+        socket.assigns[:__drab_pid]
+        |> Drab.get_socket()
+        |> on_handle_info(message)
+
+        {:noreply, socket}
+      end
+
+      @spec on_handle_info(Phoenix.Socket.t(), any()) :: any()
+      def on_handle_info(socket, message), do: :ok
+
       @spec verify_and_cast(atom, list, Phoenix.Socket.t()) :: {:noreply, Phoenix.Socket.t()}
       defp verify_and_cast(event_name, params, socket) do
         p = [event_name, socket] ++ params
@@ -175,7 +189,7 @@ defmodule Drab.Channel.Base do
         Drab.detokenize(socket, sender_encrypted)
       end
 
-      defoverridable on_join: 1
+      defoverridable on_join: 1, on_handle_info: 2
     end
   end
 end
