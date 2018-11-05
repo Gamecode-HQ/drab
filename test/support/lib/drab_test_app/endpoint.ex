@@ -4,6 +4,7 @@ defmodule DrabTestApp.Endpoint do
   use Phoenix.Endpoint, otp_app: :drab
 
   socket("/socket", DrabTestApp.UserSocket)
+  socket("/custom_socket", DrabTestApp.CustomUserSocket)
 
   # Serve at "/" the static files from "priv/static" directory.
   #

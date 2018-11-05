@@ -21,8 +21,8 @@ defmodule Drab.Channel.Base do
         {:ok, pid} = Drab.start_link(socket)
         socket_with_pid = assign(socket, :__drab_pid, pid)
 
-        case pid |> Drab.get_socket() |> on_join() do
-          {:ok, _socket} -> {:ok, socket_with_pid}
+        case on_join(socket_with_pid) do
+          {:ok, socket} -> {:ok, socket}
           _error -> {:error, %{reason: "on_join/1 failed"}}
         end
       end
