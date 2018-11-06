@@ -12,9 +12,14 @@ defmodule DrabTestApp.CommanderEventsTest do
     [socket: drab_socket()]
   end
 
-  test "pokes socket from outside" do
+  test "pokes socket from outside", %{socket: socket} do
     element = find_element(:id, "test")
     assert visible_text(element) == "CHANGED"
+
+    send Drab.commander_pid(socket), :second
+    
+    element = find_element(:id, "test")
+    assert visible_text(element) == "CHANGED AGAIN"
   end
 
 end

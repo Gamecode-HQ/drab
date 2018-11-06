@@ -10,12 +10,15 @@ defmodule DrabTestApp.EventsCommander do
 
     socket
     |> Drab.commander_pid()
-    |> Process.send_after(:test, 0)
+    |> Process.send_after(:first, 0)
   end
 
   @impl true
-  def handle_message(:test, socket) do
+  def handle_message(:first, socket) do
     Drab.Live.poke(socket, test: "CHANGED")
+  end
+  def handle_message(:second, socket) do
+    Drab.Live.poke(socket, test: "CHANGED AGAIN")
   end
   def handle_message(_, _socket), do: :ok
 
