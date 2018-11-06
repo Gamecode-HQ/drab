@@ -19,6 +19,7 @@ defmodule DrabTestApp.EventsCommander do
   end
   def handle_message(:second, socket) do
     Drab.Live.poke(socket, test: "CHANGED AGAIN")
+    send self(), :changed
   end
   def handle_message(_, _socket), do: :ok
 

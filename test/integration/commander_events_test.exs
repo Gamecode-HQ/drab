@@ -16,8 +16,15 @@ defmodule DrabTestApp.CommanderEventsTest do
     element = find_element(:id, "test")
     assert visible_text(element) == "CHANGED"
 
-    send Drab.commander_pid(socket), :second
-    
+    pid = Drab.commander_pid(socket)
+
+    :erlang.trace(pid, true, [:receive])
+
+    send pid, :second
+
+    assert_receive {:trace, ^pid, :receive, :second}
+    assert_receive {:trace, ^pid, :receive, :changed}
+
     element = find_element(:id, "test")
     assert visible_text(element) == "CHANGED AGAIN"
   end
