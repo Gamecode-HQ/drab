@@ -172,6 +172,7 @@ defmodule Drab do
   @spec init(t) :: {:ok, t}
   def init(state) do
     Process.flag(:trap_exit, true)
+    self() |> state.commander.start_link()
     {:ok, state}
   end
 
@@ -689,6 +690,12 @@ defmodule Drab do
   @spec pid(Phoenix.Socket.t()) :: pid
   def pid(socket) do
     socket.assigns.__drab_pid
+  end
+
+  @spec commander_pid(Phoenix.Socket.t()) :: pid()
+  def commander_pid(socket) do
+    pid(socket)
+    |> Drab.Commander.Helpers.commander_pid()
   end
 
   # if module is commander or controller with drab enabled,
