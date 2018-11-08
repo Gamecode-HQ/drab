@@ -24,7 +24,7 @@ defmodule Drab.Commander.HelpersTest do
     test "generates module name based on drab_pid" do
       pid = :erlang.list_to_pid('<0.100.0>')
 
-      assert name(pid) == :"Elixir.Drab.Commander.Helpers.0.100.0"
+      assert name(pid) == :"Elixir.Drab.Commander.0.100.0"
     end
   end
 

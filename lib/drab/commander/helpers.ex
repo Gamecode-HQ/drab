@@ -2,7 +2,7 @@ defmodule Drab.Commander.Helpers do
 
   @spec name(pid()) :: atom()
   def name(drab_pid) when is_pid(drab_pid) do
-    Module.concat(__MODULE__, pid_to_binary(drab_pid))
+    Module.concat(Drab.Commander, pid_to_binary(drab_pid))
   end
 
   @spec commander_pid(pid()) :: pid() | {atom(), node()} | nil
