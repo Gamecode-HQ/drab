@@ -79,9 +79,9 @@ defmodule Drab.Live.Partial do
   Returns list of amperes for the given assign.
 
       iex> amperes_for_assign("gm2dgnjygm2dgnjt", :color)
-      ["gi3dmojvga3tknbz", "gi4dcmbygq3tmnrt"]
+      ["ge2tsnbxha3dsnrs", "gm4taobsgu4dknrv"]
       iex> amperes_for_assign("gm2dgnjygm2dgnjt", :text)
-      ["gi2dcmbrgqztmobz", "gi3dmojvga3tknbz", "gi4dcmbygq3tmnrt"]
+      ["ge2tsnbxha3dsnrs", "gm4taobsgu4dknrv", "gmytaojwhe2dsmrx"]
       iex> amperes_for_assign("gm2dgnjygm2dgnjt", :nonexistent)
       []
   """
@@ -107,11 +107,11 @@ defmodule Drab.Live.Partial do
   Returns list of amperes for the given assign list.
 
       iex> amperes_for_assigns("gm2dgnjygm2dgnjt", [:color])
-      ["gi3dmojvga3tknbz", "gi4dcmbygq3tmnrt"]
+      ["ge2tsnbxha3dsnrs", "gm4taobsgu4dknrv"]
       iex> amperes_for_assigns("gm2dgnjygm2dgnjt", [:text])
-      ["gi2dcmbrgqztmobz", "gi3dmojvga3tknbz", "gi4dcmbygq3tmnrt"]
+      ["ge2tsnbxha3dsnrs", "gm4taobsgu4dknrv", "gmytaojwhe2dsmrx"]
       iex> amperes_for_assigns("gm2dgnjygm2dgnjt", [:color, :text]) |> Enum.sort()
-      ["gi2dcmbrgqztmobz", "gi3dmojvga3tknbz", "gi4dcmbygq3tmnrt"]
+      ["ge2tsnbxha3dsnrs", "gm4taobsgu4dknrv", "gmytaojwhe2dsmrx"]
       iex> amperes_for_assigns("gm2dgnjygm2dgnjt", [:nonexistent])
       []
   """
@@ -132,6 +132,7 @@ defmodule Drab.Live.Partial do
   """
   @spec all_assigns(t | String.t()) :: [atom] | no_return
   def all_assigns(nil), do: Drab.Live.raise_partial_not_found(nil)
+
   def all_assigns(%Partial{} = partial) do
     for {_ampere_id, amperes} <- partial.amperes,
         ampere <- amperes do
