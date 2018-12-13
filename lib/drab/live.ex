@@ -18,6 +18,15 @@ defmodule Drab.Live do
       config :phoenix, :template_engines,
         drab: Drab.Live.Engine
 
+  ## Performance
+  `Drab.Live` re-renders the page at the backend and pushes only the changed parts to the fronted.
+  Thus it is not advised to use it in the big, slow rendering pages. In this case it is better
+  to split the page to the partials and `poke` in the partial only, or use light update with
+  `Drab.Element` or `Drab.Query`.
+
+  Also, it is not advised to use `Drab.Live` with big assigns - they must be transferred from the
+  client when connected.
+
   ## Avoiding using Drab
   If there is no need to use Drab with some expression, you may mark it with `nodrab/1` function.
   Such expressions will be treated as a "normal" Phoenix expressions and will not be updatable
@@ -235,6 +244,10 @@ defmodule Drab.Live do
 
   ## Broadcasting
   There is a function `broadcast_poke` to broadcast living assigns to more than one browser.
+  * It should be used with caution *.
+
+  When you are broadcasting, you must be aware that the template is re-rendered only once for the
+  client which triggered the action, not for all the browsers.
 
   For broadcasting using a `subject` instead of `socket` (like `same_action/1`), Drab is unable
   to automatically retrieve view and template name, as well as existing assigns values. This,
@@ -507,6 +520,11 @@ defmodule Drab.Live do
   Broadcasting the poke is a non-trivial operation, and you must be aware that the local
   assign cache of the handler process is not updated on any of the browsers. This mean that
   `peek/2` may return obsolete values.
+
+  Also, be aware that the page is re-rendered only once, within the environment from the browser
+  which triggered the action, and the result of this is sent to all the clients. So it makes sence
+  only when you have the same environment eveywhere (no `client_id` in assigns, etc). In the other
+  case, use other broadcasting functions from the other modules, like `Drab.Element`.
 
   Returns `{:ok, :broadcasted}`.
 
