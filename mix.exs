@@ -1,6 +1,6 @@
 defmodule Drab.Mixfile do
   use Mix.Project
-  @version "0.10.0"
+  @version "0.10.1"
 
   def project do
     [
@@ -50,7 +50,7 @@ defmodule Drab.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.2"},
-      {:phoenix_html, ">= 2.13.0"},
+      {:phoenix_html, "~> 2.13"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},

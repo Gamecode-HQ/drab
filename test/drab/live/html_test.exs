@@ -21,10 +21,8 @@ defmodule Drab.Live.HtmlTest do
          {:case, [generated: true],
           [
             {{:., [line: 7],
-              [
-                {:__aliases__, [line: 7, alias: false], [:Phoenix, :HTML, :Engine]},
-                :fetch_assign!
-              ]}, [line: 7],
+              [{:__aliases__, [line: 7, alias: false], [:Phoenix, :HTML, :Engine]}, :fetch_assign!]},
+             [line: 7],
              [
                {:var!, [line: 7, context: Drab.Live.EExEngine, import: Kernel],
                 [{:assigns, [line: 7], Drab.Live.EExEngine}]},
@@ -90,10 +88,8 @@ defmodule Drab.Live.HtmlTest do
          {:case, [generated: true],
           [
             {{:., [line: 7],
-              [
-                {:__aliases__, [line: 7, alias: false], [:Phoenix, :HTML, :Engine]},
-                :fetch_assign!
-              ]}, [line: 7],
+              [{:__aliases__, [line: 7, alias: false], [:Phoenix, :HTML, :Engine]}, :fetch_assign!]},
+             [line: 7],
              [
                {:var!, [line: 7, context: Drab.Live.EExEngine, import: Kernel],
                 [{:assigns, [line: 7], Drab.Live.EExEngine}]},
@@ -382,10 +378,8 @@ defmodule Drab.Live.HtmlTest do
          {:case, [generated: true],
           [
             {{:., [line: 7],
-              [
-                {:__aliases__, [line: 7, alias: false], [:Phoenix, :HTML, :Engine]},
-                :fetch_assign!
-              ]}, [line: 7],
+              [{:__aliases__, [line: 7, alias: false], [:Phoenix, :HTML, :Engine]}, :!]},
+             [line: 7],
              [
                {:var!, [line: 7, context: Drab.Live.EExEngine, import: Kernel],
                 [{:assigns, [line: 7], Drab.Live.EExEngine}]},
