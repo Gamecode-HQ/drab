@@ -1,0 +1,6 @@
+<div id="begin"></div>
+<div id="drab_pid"></div>
+
+<hr>
+
+<div id="test"><%= @test %></div>

@@ -253,6 +253,8 @@ defmodule Drab.Commander do
   See also `Drab.Controller`
   """
 
+  @callback handle_message(any(), %Phoenix.Socket{}) :: any()
+
   defmacro __using__(options) do
     opts = Map.merge(%Drab.Commander.Config{}, Enum.into(options, %{}))
 
@@ -270,6 +272,9 @@ defmodule Drab.Commander do
     modules_to_import = DrabModule.all_modules_for(modules)
 
     quote do
+      @behaviour unquote(__MODULE__)
+      use GenServer
+
       import unquote(__MODULE__)
       import Drab.Core
 
@@ -288,6 +293,27 @@ defmodule Drab.Commander do
           end
         end)
       end
+
+      @spec start_link(pid()) :: GenServer.on_start()
+      def start_link(drab_pid) do
+        name = Drab.Commander.Helpers.name(drab_pid)
+        GenServer.start_link(__MODULE__, drab_pid, name: name)
+      end
+
+      @impl true
+      def init(drab_pid) do
+        {:ok, drab_pid}
+      end
+
+      @impl true
+      def handle_info(message, drab_pid) do
+        socket = Drab.get_socket(drab_pid)
+        handle_message(message, socket)
+        {:noreply, drab_pid}
+      end
+
+      @spec handle_message(any(), %Phoenix.Socket{}) :: any()
+      def handle_message(_message, _socket), do: :ok
 
       @doc """
       A shordhand for `Phoenix.View.render_to_string/3`. Injects the corresponding view.
@@ -310,6 +336,8 @@ defmodule Drab.Commander do
       def render_to_string(view, template, assigns) do
         Phoenix.View.render_to_string(view, template, assigns)
       end
+
+      defoverridable init: 1, handle_message: 2
 
       @before_compile unquote(__MODULE__)
     end
